@@ -1,0 +1,25 @@
+{
+  "name": "vue-validator",
+  "version": "0.0.1",
+  "description": "表单校验Vue插件",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:cjs",
+    "build:cjs": "NODE_ENV=cjs rollup --config build/rollup.config.js",
+    "build:es": "NODE_ENV=es rollup --config build/rollup.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "rollup": "^0.68.2",
+    "rollup-plugin-babel": "^4.1.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
+  },
+  "keywords": [
+    "form",
+    "validate"
+  ],
+  "author": "Cassie",
+  "license": "ISC"
+}
