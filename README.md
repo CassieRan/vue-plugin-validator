@@ -82,7 +82,7 @@ Vue.use(validator)
 </style>
 ```
 
-- ## 使用
+## 使用
 
 1、 安装插件：`Vue.use(validator[, options])`
 
