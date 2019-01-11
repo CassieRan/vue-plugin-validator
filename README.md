@@ -1,5 +1,7 @@
 ## 仓库
 
+http://gitlab.ndmicro.net/ndmicro-web/vue-validator.git
+
 ## 安装
 
 暂省略，待搭建npm私服
@@ -82,7 +84,7 @@ Vue.use(validator)
 
 - ## 使用
 
-1. 安装插件：`Vue.use(validator[, options])`
+1、 安装插件：`Vue.use(validator[, options])`
 
 - options.blur: Boolean, default `true`. 是否在失去光标时警告。
 
@@ -100,7 +102,7 @@ Vue.use(validator)
   })
   ```
 
-2. `v-verify`指令
+2、 `v-verify`指令
 
 - 参数：检验策略，例如：username、password、mobilePhone
 
@@ -113,7 +115,7 @@ Vue.use(validator)
 
 示例：`v-verify:username.required.sync="{group: 'login'}"`意为输入时检验是否为空，是否符合username规则并将其归为'login'表单组。
 
-3. 内置检验策略(待完善)
+3、 内置检验策略(待完善)
 
 - ```javascript
   required: {
@@ -166,7 +168,7 @@ Vue.use(validator)
   }
   ```
 
-4. 统一校验表单组`vm.$verify.validate([group])`
+4、 统一校验表单组`vm.$verify.validate([group])`
 
    校验'group'组的所有表单元素，返回值为Boolean，如为true校验通过，如为false校验不通过
 
