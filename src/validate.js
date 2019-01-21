@@ -1,7 +1,6 @@
 import domUtils from "./domUtils";
 
 export default (rules, strategy, config, el, vm) => {
-    console.dir(el)
     let res = {
         isAvaliable: true,
         msg: null
