@@ -130,6 +130,7 @@ Vue.use(validator)
   - `.sync`  输入时同步检查
 
 - **预期**：`Object(optional)`
+
   - `group`  表单组名，标记表单分组
 
 - **示例**：
@@ -180,3 +181,13 @@ Vue.use(validator)
            v-model="username">
     <span class="warn" v-show="$errors['username']&&$errors['username'].isAvaliable">{{$errors['username']&&$errors['username'].msg}}</span>
     ```
+
+
+
+**# 演示**
+  
+  - **group**
+    ![group](./public/images/group.gif)
+  - **single**
+    ![single](./public/images/single.gif)
+
