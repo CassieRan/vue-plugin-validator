@@ -7,20 +7,24 @@ import './style.less'
 let blurCb, focusCb
 const defaultConfig = {
     required: false,
-    sync: false
+    sync: false,
+    focus: false,
 }
 
 export default {
-    install(Vue, options = {
-        blur: true,
-        rules: []
-    }) {
-        const rules = Object.assign({}, defaultRules, options.rules)
+    install(Vue, {
+        blur = true,
+        customRules = {},
+        errorToast = false,
+        warnBorder = true
+    } = {}) {
+        const rules = Object.assign({}, defaultRules, customRules)
         Vue.prototype._rules = rules
 
         Vue.mixin({
             beforeCreate: function () {
-                this.$verify = new Verify(this)
+                Vue.util.defineReactive(this, '$verify', new Verify(this))
+                Vue.util.defineReactive(this, '$errors', {})
             }
         })
         Vue.directive('verify', {
@@ -33,32 +37,41 @@ export default {
                 // 校验策略
                 const strategy = binding.arg
                 // 获取配置
-                const config = Object.assign({}, defaultConfig, binding.modifiers)
+                const config = Object.assign({}, defaultConfig, binding.modifiers, {
+                    errorToast,
+                    warnBorder
+                })
                 // 获取当前Vue实例
                 const vm = vnode.context
                 const value = binding.value ? binding.value : {}
 
-                // 创建错误显示节点
-                let errNode = document.createElement('span')
-                domUtils.addClass(errNode, 'validator-error')
-                domUtils.insertAfter(errNode, el)
-
-
-                blurCb = e => validate(rules, strategy, config, el)
-                focusCb = e => {
-                    domUtils.removeClass(errNode, 'inline')
-                    domUtils.removeClass(el, 'input-error')
+                if (errorToast) {
+                    // 创建错误显示节点
+                    var errNode = document.createElement('span')
+                    domUtils.addClass(errNode, 'validator-error')
+                    domUtils.insertAfter(errNode, el)
                 }
 
-                if (options.blur) {
+
+                blurCb = e => validate(rules, strategy, config, el, vm)
+                focusCb = e => {
+                    if (errorToast) domUtils.removeClass(errNode, 'inline')
+                    if (warnBorder) domUtils.removeClass(el, 'input-error')
+                    if (vm.$errors[el.id]) vm.$delete(vm.$errors, el.id)
+                }
+
+                if (blur) {
                     // 失去焦点校验
                     el.addEventListener('blur', blurCb)
                 }
-                // 获取焦点取消警告样式
-                el.addEventListener('focus', focusCb)
+
+                if (config.focus) {
+                    // 获取焦点取消警告样式
+                    el.addEventListener('focus', focusCb)
+                }
 
                 // 如果开启了同步校验
-                if (config.sync) {
+                if (config.sync && blur) {
                     // 输入同步校验
                     el.addEventListener('input', blurCb)
                 }

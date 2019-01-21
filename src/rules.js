@@ -38,7 +38,7 @@ const int = {
 
 
 const email = {
-    rule: new RegExp('^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,4})$'),
+    rule: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
     msg: '无效的邮箱地址'
 }
 
@@ -48,7 +48,12 @@ const required = {
             return input || input === 0
         }
     },
-    msg: '*必填项'
+    msg: '必填项'
+}
+
+const code = {
+    rule: new RegExp('^\\d{6}$'),
+    msg: '验证码无效'
 }
 
 
@@ -61,6 +66,7 @@ export default {
     int,
     email,
     mobilePhone,
-    identifyCard
+    identifyCard,
+    code
 }
 

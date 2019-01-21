@@ -21,7 +21,7 @@ Verify.prototype.validate = function (group) {
 
     return verifyQueue.map(item => {
         // 校验
-        const res = validate(vm._rules, item.strategy, item.config, item.el)
+        const res = validate(vm._rules, item.strategy, item.config, item.el, vm)
         return res
     }).every(item => item.isAvaliable)
 }

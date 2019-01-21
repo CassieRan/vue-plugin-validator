@@ -1,6 +1,6 @@
 import domUtils from "./domUtils";
 
-export default (rules, strategy, config, el) => {
+export default (rules, strategy, config, el, vm) => {
     const errNode = el.nextSibling
     let isAvaliable
     // 如果是必填项
@@ -8,13 +8,19 @@ export default (rules, strategy, config, el) => {
         isAvaliable = rules['required'].rule.test(el.value)
         if (!isAvaliable) {
             // 警告样式
-            errNode.innerHTML = rules['required'].msg
-            domUtils.addClass(errNode, 'inline')
-            domUtils.addClass(el, 'input-error')
-            return {
+            if (config.errorToast) {
+                errNode.innerHTML = rules['required'].msg
+                domUtils.addClass(errNode, 'inline')
+            }
+            if (config.warnBorder) {
+                domUtils.addClass(el, 'input-error')
+            }
+            const error = {
                 isAvaliable,
                 msg: rules['required'].msg
             }
+            vm.$set(vm.$errors, el.id, error)
+            return error
         }
     }
 
@@ -24,13 +30,23 @@ export default (rules, strategy, config, el) => {
     isAvaliable = strategy.rule.test(el.value)
     if (!isAvaliable) {
         // 警告样式
-        errNode.innerHTML = strategy.msg
-        domUtils.addClass(errNode, 'inline')
-        domUtils.addClass(el, 'input-error')
-    }
-
-    return {
-        isAvaliable,
-        msg: strategy.msg
+        if (config.errorToast) {
+            errNode.innerHTML = rules[strategy].msg
+            domUtils.addClass(errNode, 'inline')
+        }
+        if (config.warnBorder) {
+            domUtils.addClass(el, 'input-error')
+        }
+        const error = {
+            isAvaliable,
+            msg: strategy.msg
+        }
+        vm.$set(vm.$errors, el.id, error)
+        return error
+    } else {
+        return {
+            isAvaliable,
+            msg: null
+        }
     }
 }
