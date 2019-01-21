@@ -2,9 +2,15 @@
 
 http://gitlab.ndmicro.net/ndmicro-web/vue-validator.git
 
+
+
 ## 安装
 
-暂省略，待搭建npm私服
+```bash
+npm install vue-validator
+```
+
+
 
 ## 快速开始
 
@@ -12,8 +18,7 @@ http://gitlab.ndmicro.net/ndmicro-web/vue-validator.git
 // main.js
 
 import Vue from 'vue'
-// import Validator from 'vue-validator'
-import validator from '@/assets/validator'
+import Validator from 'vue-validator'
  
 Vue.use(validator)
 ```
@@ -82,17 +87,28 @@ Vue.use(validator)
 </style>
 ```
 
+
+
 ## 使用
 
-1、 安装插件：`Vue.use(validator[, options])`
+**# 安装插件**：`Vue.use(validator[, options])`
 
-- options.blur: Boolean, default `true`. 是否在失去光标时警告。
+- **参数**：
+  - `{Object} options`
+    - `{Boolean}  blur `  是否在失去焦点时检验，默认为`true`
+    - `{Boolean}  errorToast `  是否需要错误提示，默认为`false`
+    - `{Boolean}  warnBorder `  是否需要警告边框，默认为`true`
+    - `{Object} rules`  自定义规则
 
-- options.rules: Object, default `{}`. 自定义检验规则，如与内置检验规则重名，则会覆盖。
+- **用法**：
+  该插件内置了常用的校验策略，如需使用内置校验策略之外的校验策略，可在rules中列出。
 
+- **示例**：
   ```javascript
   Vue.use(validator, {
       blur: false,
+      warnBorder: true,
+      errorToast: true,
       rules: {
       	mobilePhone: {
               rule: new RegExp('^1(3|4|5|7|8)\\d{9}$'),
@@ -102,77 +118,65 @@ Vue.use(validator)
   })
   ```
 
-2、 `v-verify`指令
 
-- 参数：检验策略，例如：username、password、mobilePhone
 
-- 修饰符：
-  - required: 必填
-  - sync: 输入事件发生时同步检验
+**# 指令**：`v-verify`
 
-- 绑定值：Object, 可选
-  - group: 表单组名，可选，为了提交表单时进行校验
+- **参数**：`strategy` 检验策略
 
-示例：`v-verify:username.required.sync="{group: 'login'}"`意为输入时检验是否为空，是否符合username规则并将其归为'login'表单组。
+- **修饰符**：
+  - `.required`  为必填项
+  - `.focus`  获取焦点时忽略检查
+  - `.sync`  输入时同步检查
 
-3、 内置检验策略(待完善)
+- **预期**：`Object(optional)`
+  - `group`  表单组名，标记表单分组
 
-  ```javascript
-  required: {
-      rule: {
-          test: function (input) {
-              return input || input === 0
-          }
-      },
-      msg: '*必填项'
-  }
-  
-  username: {
-      rule: new RegExp('^[a-zA-Z0-9_-]{0,16}$'),
-      msg: '必须是1至16位长度的大写字母、小写字母或数字'
-  }
-  
-  password: {
-      rule: new RegExp('^.*(?=.{6,})(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$'),
-      msg: '最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符'
-  }
-  
-  positiveInt: {
-      rule: new RegExp('^\d+$'),
-      msg: '必须填入正整数'
-  }
-  
-  negativeInt: {
-      rule: new RegExp('^-\d+$'),
-      msg: '必须填入负整数'
-  }
-  
-  int: {
-      rule: new RegExp('^-?\d+$'),
-      msg: '必须填入整数'
-  }
-  
-  email: {
-      rule: new RegExp('^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,4})$'),
-      msg: '无效的邮箱地址'
-  }
-  
-  mobilePhone: {
-      rule: new RegExp('^1(3|4|5|7|8)\\d{9}$'),
-      msg: '无效的手机号'
-  }
-  
-  identifyCard: {
-      rule: new RegExp('^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$'),
-      msg: '无效的身份证号'
-  }
+- **示例**：
+- ```vue
+  <input v-model="username" v-verify:username.required="{group: 'login'}"/>
   ```
-
-4、 统一校验表单组`vm.$verify.validate([group])`
-
-   校验'group'组的所有表单元素，返回值为Boolean，如为true校验通过，如为false校验不通过
+  意为使用username检验策略检验username是否正确，该项为必填，隶属于'login'表单组。
 
 
 
+**# 内置检验策略**
+
+- `required`  必填项
+- `username`  用户名 
+- `password`  密码
+- `positiveInt`  正整数
+- `negativeInt`  负整数
+- `int`  整数
+- `email`  邮箱
+- `mobilePhone`  手机号码
+- `identifyCard`  身份证号码
+- `verificationCode`  短信验证码
 
 
+
+**# 方法**
+
+- `vm.$verify.validate([group])`
+  - **参数**：`{String} group`  表单组名
+  - **返回值**：`{Boolean}`  是否校验通过
+
+
+
+**# 属性**
+
+- `vm.$errors[id].isAvaliable`
+  - **参数**：`{String} id`  表单元素id
+  - **返回值**：`{Boolean}`  是否校验通过
+
+- `vm.$errors[id].msg`
+  - **参数**：`{String} id`  表单元素id
+  - **返回值**：`{String}`  错误提示文本
+  - **示例**：
+  - ```vue
+    <input id="username"
+           type="text"
+           v-verify:username.required.sync.focus="{group: 'login'}"
+           v-model="username">
+    <span class="warn" v-show="$errors['username']&&$errors['username'].isAvaliable">{{$errors['username']&&$errors['username'].msg}}</span>
+    ```
