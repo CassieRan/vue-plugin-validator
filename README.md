@@ -187,7 +187,10 @@ Vue.use(validator)
 **# 演示**
   
   - **group**
-    ![group](./public/images/group.gif)
+  
+  ![group](./public/images/group.gif)
+  
   - **single**
-    ![single](./public/images/single.gif)
+  
+  ![single](./public/images/single.gif)
 
