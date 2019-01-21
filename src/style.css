@@ -1,0 +1,20 @@
+.validator-error {
+  display: none;
+  color: rgba(245, 108, 108);
+  font-size: 14px;
+}
+
+.validator-error .inline {
+  display: inline-block !important;
+  margin-left: 10px;
+}
+
+.validator-error .block {
+  display: block !important;
+  margin-top: 10px;
+}
+
+.input-error {
+  border: 1px solid #F56C6C !important;
+  box-shadow: 0 2px 2px 0 rgba(245, 108, 108, 0.16), 0 0 0 1px rgba(245, 108, 108, 0.08) !important;
+}
