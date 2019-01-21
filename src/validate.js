@@ -1,8 +1,13 @@
 import domUtils from "./domUtils";
 
 export default (rules, strategy, config, el, vm) => {
-    const errNode = el.nextSibling
+    console.dir(el)
+    let res = {
+        isAvaliable: true,
+        msg: null
+    }
     let isAvaliable
+    const errNode = el.nextSibling
     // 如果是必填项
     if (config.required) {
         isAvaliable = rules['required'].rule.test(el.value)
@@ -15,13 +20,19 @@ export default (rules, strategy, config, el, vm) => {
             if (config.warnBorder) {
                 domUtils.addClass(el, 'input-error')
             }
-            const error = {
+            res = {
                 isAvaliable,
                 msg: rules['required'].msg
             }
-            vm.$set(vm.$errors, el.id, error)
-            return error
+            vm.$set(vm.$errors, el.id, res)
+            return res
         }
+    }
+
+    // 如果不需要校验策略
+    if (!strategy) {
+        vm.$set(vm.$errors, el.id, res)
+        return res
     }
 
     // 其它校验
@@ -37,16 +48,11 @@ export default (rules, strategy, config, el, vm) => {
         if (config.warnBorder) {
             domUtils.addClass(el, 'input-error')
         }
-        const error = {
+        res = {
             isAvaliable,
             msg: strategy.msg
         }
-        vm.$set(vm.$errors, el.id, error)
-        return error
-    } else {
-        return {
-            isAvaliable,
-            msg: null
-        }
     }
+    vm.$set(vm.$errors, el.id, res)
+    return res
 }
