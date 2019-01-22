@@ -7,7 +7,7 @@ http://gitlab.ndmicro.net/ndmicro-web/vue-validator.git
 ## 安装
 
 ```bash
-npm install vue-validator
+npm install vue-plugin-validator
 ```
 
 
@@ -18,7 +18,7 @@ npm install vue-validator
 // main.js
 
 import Vue from 'vue'
-import Validator from 'vue-validator'
+import Validator from 'vue-plugin-validator'
  
 Vue.use(validator)
 ```
