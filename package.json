@@ -1,5 +1,5 @@
 {
-  "name": "vue-validator",
+  "name": "vue-plugin-validator",
   "version": "0.0.1",
   "description": "表单校验Vue插件",
   "main": "src/index.js",
