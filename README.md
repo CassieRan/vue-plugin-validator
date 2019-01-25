@@ -98,10 +98,10 @@ Vue.use(validator)
     - `{Boolean}  blur `  是否在失去焦点时检验，默认为`true`
     - `{Boolean}  errorToast `  是否需要错误提示，默认为`false`
     - `{Boolean}  warnBorder `  是否需要警告边框，默认为`true`
-    - `{Object} rules`  自定义规则
+    - `{Object} customRules`  自定义规则
 
 - **用法**：
-  该插件内置了常用的校验策略，如需使用内置校验策略之外的校验策略，可在rules中列出。
+  该插件内置了常用的校验策略，如需使用内置校验策略之外的校验策略，可在customRules中列出。
 
 - **示例**：
   ```javascript
@@ -109,7 +109,7 @@ Vue.use(validator)
       blur: false,
       warnBorder: true,
       errorToast: true,
-      rules: {
+      customRules: {
       	mobilePhone: {
               rule: new RegExp('^1(3|4|5|7|8)\\d{9}$'),
               msg: '无效的手机号'
