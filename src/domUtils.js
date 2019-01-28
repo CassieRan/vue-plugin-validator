@@ -8,21 +8,59 @@ const insertAfter = (newElement, targetElement) => {
     }
 }
 
-const addClass = (node, className) => {
-    let classArr = node.className.split(' ')
-    if (!classArr.includes(className)) {
-        classArr.push(className)
-        node.className = classArr.join(' ')
-    }
+const trim = string => {
+    return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
 }
+const hasClass=(el, cls) => {
+    if (!el || !cls) return false;
+    if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.');
+    if (el.classList) {
+        return el.classList.contains(cls);
+    } else {
+        return (' ' + el.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+};
 
-const removeClass = (node, className) => {
-    let classArr = node.className.split(' ')
-    if (classArr.includes(className)) {
-        classArr = classArr.filter(val => val !== className)
-        node.className = classArr.join(' ')
+const addClass = (el, cls) =>{
+    if (!el) return;
+    let curClass = el.className;
+    const classes = (cls || '').split(' ');
+
+    let i = 0, j = classes.length;
+    for (; i < j; i++) {
+        let clsName = classes[i];
+        if (!clsName) continue;
+
+        if (el.classList) {
+            el.classList.add(clsName);
+        } else if (!hasClass(el, clsName)) {
+            curClass += ' ' + clsName;
+        }
     }
-}
+    if (!el.classList) {
+        el.className = curClass;
+    }
+};
+const removeClass = (el, cls) =>{
+    if (!el || !cls) return;
+    const classes = cls.split(' ');
+    let curClass = ' ' + el.className + ' ';
+
+    let i = 0, j = classes.length;
+    for (; i < j; i++) {
+        let clsName = classes[i];
+        if (!clsName) continue;
+
+        if (el.classList) {
+            el.classList.remove(clsName);
+        } else if (hasClass(el, clsName)) {
+            curClass = curClass.replace(' ' + clsName + ' ', ' ');
+        }
+    }
+    if (!el.classList) {
+        el.className = trim(curClass);
+    }
+};
 
 export default {
     insertAfter,

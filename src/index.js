@@ -2,7 +2,7 @@ import defaultRules from './rules'
 import domUtils from './domUtils'
 import validate from './validate'
 import Verify from './verify'
-import './style.less'
+import './style.css'
 
 let blurCb, focusCb
 const defaultConfig = {
@@ -52,7 +52,7 @@ export default {
                     domUtils.insertAfter(errNode, el)
                 }
 
-
+                // 保存回调函数，解绑事件时用到
                 blurCb = e => validate(rules, strategy, config, el, vm)
                 focusCb = e => {
                     if (errorToast) domUtils.removeClass(errNode, 'inline')
