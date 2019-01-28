@@ -1,9 +1,3 @@
-## 仓库
-
-http://gitlab.ndmicro.net/ndmicro-web/vue-validator.git
-
-
-
 ## 安装
 
 ```bash
